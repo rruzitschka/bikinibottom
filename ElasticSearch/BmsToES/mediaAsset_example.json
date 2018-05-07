@@ -1,0 +1,103 @@
+{
+  "asset_id": "afe1d672-efa8-4718-8572-2e9689fee071",
+  "seoID": "the-flash/season-4/8crisis-on-earth-x-iii",
+  "assetType": "Episode",
+  "originalName": "Crisis on Earth-X (III)",
+  "originalLanguage": "ar",
+  "duration": 1920,
+  "genres": ["Action", "Comedy"],
+  "keywords": ["Test_Sve"],
+  "parentTitle": "a5d666b7-2155-4aa8-b28e-d9849926a75a",
+  "publishFlag": true,
+  "validFrom": "2015-12-30T00:00:00",
+  "validTo": "2020-12-31T00:00:00",
+  "productionYear": 2017,
+  "mediaLangs": [{
+    "langId": "en",
+    "name": "Crisis on Earth-X (III)",
+    "shortName": "Crisis on Earth",
+    "synopsis": {
+      "short": "Barry and Iris's wedding brings the gang together, but things go awry when villains from Earth-X attack the ceremony.",
+      "medium": "Barry and Iris's wedding brings the gang together, but things go awry when villains from Earth-X attack the ceremony. All of the superheroes band together with help from their super friends like Citizen Cold, The Ray, Felicity Smoak, Iris West and Alex Danvers to take on their most formidable villains yet.",
+      "long": "Barry and Iris's wedding brings the gang together, but things go awry when villains from Earth-X attack the ceremony. All of the superheroes band together with help from their super friends like Citizen Cold, The Ray, Felicity Smoak, Iris West and Alex Danvers to take on their most formidable villains yet. Earth's mightiest heroes - Green Arrow, Supergirl, The Flash and White Canary - lead their teams into battle to save the world.The crossover starts on Supergirl S03E08 Crisis on Earth X (I) and Arrow S06E08 Crisis on Earth X (II). It continues on DC's Legends of Tomorrow S03E08 Crisis on Earth X (IV)."
+    },
+    "actors": [{
+      "personId": "b419aeae-7be2-49b1-be9b-79a2ed3634a7",
+      "name": "Patrick Stewart",
+      "role": "Cast",
+      "description": "Gave read use way make spot how nor. In daughter goodness an likewise oh consider at procured wandered. Songs words wrong by me hills heard timed.",
+      "relatedAssets": ["d5f5d2bb-8931-4df3-ac21-b21056eb694b",
+        "fd8d9e75-a854-4555-b785-139abee5d9e6",
+        "c27033eb-a006-43d7-9b69-c0f42bec2f8f",
+        "5690de77-ebd4-4f94-ae2e-ea2385529af1",
+        "4c32a9e0-3a01-483a-b57c-c681138cbd0f",
+        "67407104-dac9-4a4c-a0af-06d0cfc11fe2"]
+    },
+    {
+      "personId": "763590e6-0385-4b04-8059-9f93fdbdd63a",
+      "name": "Frances White",
+      "role": "Cast",
+      "description": "Gave read use way make spot how nor. In daughter goodness an likewise oh consider at procured wandered. Songs words wrong by me hills heard timed.",
+      "relatedAssets": ["d5f5d2bb-8931-4df3-ac21-b21056eb694b",
+        "fd8d9e75-a854-4555-b785-139abee5d9e6",
+        "2916ff60-645a-4076-9efc-2896c181b6f3",
+        "4c32a9e0-3a01-483a-b57c-c681138cbd0f",
+        "67407104-dac9-4a4c-a0af-06d0cfc11fe2"]
+    }],
+    "crew": [{
+      "personId": "73f2e43b-9f75-403f-9fbd-f567b31bae0b",
+      "name": "Lisa Rivera",
+      "role": "Screenplay Writer",
+      "description": "An smallness deficient discourse do newspaper be an eagerness continued. Mr my ready guest ye after short at.",
+      "relatedAssets": ["d5f5d2bb-8931-4df3-ac21-b21056eb694b",
+        "fd8d9e75-a854-4555-b785-139abee5d9e6",
+        "67407104-dac9-4a4c-a0af-06d0cfc11fe2"]
+    },
+    {
+      "personId": "9e0f5f36-90b0-41de-a9f8-daf53e9f398c",
+      "name": "Amanda Brown",
+      "role": "Director",
+      "description": "Happy eat may doors songs. Be ignorant so of suitable dissuade weddings together. Least whole timed we is.",
+      "relatedAssets": ["d5f5d2bb-8931-4df3-ac21-b21056eb694b",
+        "fd8d9e75-a854-4555-b785-139abee5d9e6",
+        "c27033eb-a006-43d7-9b69-c0f42bec2f8f",
+        "b3f09511-5535-492e-a595-0ec09b4a58f9",
+        "2916ff60-645a-4076-9efc-2896c181b6f3",
+        "4c32a9e0-3a01-483a-b57c-c681138cbd0f",
+        "67407104-dac9-4a4c-a0af-06d0cfc11fe2"]
+    },
+    {
+      "personId": "2cc20134-40ca-417b-bda3-8987869bea7d",
+      "name": "Judy Peterson",
+      "role": "Producer",
+      "description": "It prepare is ye nothing blushes up brought. Or as gravity pasture limited evening on.",
+      "relatedAssets": ["d5f5d2bb-8931-4df3-ac21-b21056eb694b",
+        "fd8d9e75-a854-4555-b785-139abee5d9e6",
+        "4c32a9e0-3a01-483a-b57c-c681138cbd0f",
+        "67407104-dac9-4a4c-a0af-06d0cfc11fe2"]
+    },
+    {
+      "personId": "f92d51ff-43b0-49cc-a0ca-484f81d51d50",
+      "name": "Larry Jones",
+      "role": "Director of Photography",
+      "description": "Prosperous so occasional assistance it discovered especially no. Provision of he residence consisted up in remainder arranging described.",
+      "relatedAssets": ["d5f5d2bb-8931-4df3-ac21-b21056eb694b",
+        "fd8d9e75-a854-4555-b785-139abee5d9e6",
+        "9534241d-63be-4907-aa7e-3c9cc7fbb9af",
+        "2916ff60-645a-4076-9efc-2896c181b6f3",
+        "4c32a9e0-3a01-483a-b57c-c681138cbd0f",
+        "67407104-dac9-4a4c-a0af-06d0cfc11fe2"]
+    },
+    {
+      "personId": "8e863583-4845-4824-93c4-c1b4f17edaca",
+      "name": "Cynthia Wood",
+      "role": "Singer",
+      "description": "In companions inhabiting mr principles at insensible do. Heard their sex hoped enjoy vexed child for.",
+      "relatedAssets": ["d5f5d2bb-8931-4df3-ac21-b21056eb694b",
+        "fd8d9e75-a854-4555-b785-139abee5d9e6",
+        "5690de77-ebd4-4f94-ae2e-ea2385529af1",
+        "4c32a9e0-3a01-483a-b57c-c681138cbd0f",
+        "67407104-dac9-4a4c-a0af-06d0cfc11fe2"]
+    }]
+  }]
+}
