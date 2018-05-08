@@ -16,6 +16,7 @@
           "type": "text"
         },
         "mediaLangs": {
+          "type": "nested",
           "properties": {
             "name": {
               "type": "text"
@@ -37,6 +38,7 @@
               }
             },
             "actors": {
+              "type": "nested",
               "properties": {
                 "description": {
                   "type": "text"
@@ -62,6 +64,7 @@
               }
             },
             "crew": {
+              "type": "nested",
               "properties": {
                 "description": {
                   "type": "text"
