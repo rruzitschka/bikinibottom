@@ -1,12 +1,12 @@
-﻿/*
+/*
 
 Postgres function to extract BMS mediaAsset info into ElasticSearch bulk load file
-Version 0.1 / 2018-05-07
+Version 0.1
 Author: MK
 
 Install/update in BMS DB, then run following query:
 
-SELECT * FROM elastic_bulkload()
+SELECT * FROM elastic_bulkload();
 
 */
  
