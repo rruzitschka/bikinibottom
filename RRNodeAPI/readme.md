@@ -16,9 +16,9 @@ where id is a asset GUID
 
 Response is the metadata document for the asset with the specific GUID
 
-GET /v1/assets/synopsis?lang=en&length=(short, medium, long)
+GET /v1/assets/synopsis?lang=en
 
-Response is the synopsis of the specified length (either short, medium or long) in the language specified in the parameter lang.
+Response is the synopsis JSON that holds three different types of synopsis, distinguished by length (short, medium, long). The required language is specified in the parameter lang.
 
-Parameters are optional, if not specified the server uses te default values lan=en and length=short.
+Parameters are optional, if not specified the server uses te default values lang=en.
 
