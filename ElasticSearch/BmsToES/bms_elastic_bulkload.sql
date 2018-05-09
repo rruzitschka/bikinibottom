@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 Postgres function to extract BMS mediaAsset info into ElasticSearch bulk load file
 Version 0.2
