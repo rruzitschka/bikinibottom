@@ -1,7 +1,7 @@
-/*
+﻿/*
 
 Postgres function to extract BMS mediaAsset info into ElasticSearch bulk load file
-Version 0.1
+Version 0.2
 Author: MK
 
 Install/update in BMS DB, then run following query:
@@ -94,7 +94,7 @@ BEGIN
           tname.trans_string as "name",
           trole.trans_string as "role",
           tdesc.trans_string as "description",
-          (SELECT json_agg(titles.guid ORDER BY t2.title_id) FROM title_person_roles t2 JOIN titles ON t2.title_id=titles.cms_id WHERE t2.person_id=title_person_roles.person_id AND t2.title_id<>tid AND NOT t2.deleted and NOT titles.deleted) as "relatedAssets"
+          (SELECT json_agg(guid) FROM (SELECT titles.guid FROM title_person_roles t2 JOIN titles ON t2.title_id=titles.cms_id WHERE t2.person_id=title_person_roles.person_id AND t2.title_id<>tid AND NOT t2.deleted and NOT titles.deleted LIMIT 5) t) as "relatedAssets"
         FROM title_person_roles
           JOIN persons ON title_person_roles.person_id=persons.cms_id
           JOIN person_name_translatable_strings ON title_person_roles.person_id=person_name_translatable_strings.person_id
@@ -117,7 +117,7 @@ BEGIN
           tname.trans_string as "name",
           trole.trans_string as "role",
           tdesc.trans_string as "description",
-          (SELECT json_agg(titles.guid ORDER BY t2.title_id) FROM title_person_roles t2 JOIN titles ON t2.title_id=titles.cms_id WHERE t2.person_id=title_person_roles.person_id AND t2.title_id<>tid AND NOT t2.deleted and NOT titles.deleted) as "relatedAssets"
+          (SELECT json_agg(guid) FROM (SELECT titles.guid FROM title_person_roles t2 JOIN titles ON t2.title_id=titles.cms_id WHERE t2.person_id=title_person_roles.person_id AND t2.title_id<>tid AND NOT t2.deleted and NOT titles.deleted LIMIT 5) t) as "relatedAssets"
         FROM title_person_roles
           JOIN persons ON title_person_roles.person_id=persons.cms_id
           JOIN person_name_translatable_strings ON title_person_roles.person_id=person_name_translatable_strings.person_id
@@ -139,6 +139,9 @@ BEGIN
 
     -- close mediaLangs and mediaAsset
     mediaasset:=mediaasset||']}';
+
+    -- remove ",}" occurences caused by removal of trailing null value elements
+    mediaasset:=replace(mediaasset, ',}', '}');
     RETURN NEXT;
   END LOOP;
 END;
