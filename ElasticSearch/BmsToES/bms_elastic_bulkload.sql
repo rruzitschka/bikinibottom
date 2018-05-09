@@ -1,7 +1,7 @@
 /*
 
 Postgres function to extract BMS mediaAsset info into ElasticSearch bulk load file
-Version 0.1
+Version 0.3
 Author: MK
 
 Install/update in BMS DB, then run following query:
@@ -33,7 +33,7 @@ BEGIN
     title_types.name as "assetType",
     title_sub_types.name as "assetSubType",
     titles.original_name as "originalName",
-    languages.language_code as "originalLanguage",
+    (SELECT json_agg(language_code ORDER BY language_code) FROM title_original_languages JOIN languages ON title_original_languages.original_language_id=languages.cms_id WHERE title_original_languages.title_id=titles.cms_id) as "originalLanguages",
     titles.display_duration_sec as "duration",
     (SELECT json_agg(uri_id ORDER BY uri_id) FROM title_genres JOIN genres ON title_genres.genre_id=genres.cms_id WHERE title_genres.title_id=titles.cms_id AND uri_id IS NOT null) as "genres",
     (SELECT json_agg(value ORDER BY value) FROM title_keywords WHERE title_keywords.title_id=titles.cms_id) as "keywords",
@@ -48,8 +48,6 @@ BEGIN
     JOIN title_types ON titles.title_type_id=title_types.cms_id
     LEFT JOIN title_sub_types ON titles.title_sub_type_id=title_sub_types.cms_id
     LEFT JOIN seo_ids ON titles.cms_id=seo_ids.title_id AND seo_ids.locale='en'
-    LEFT JOIN title_original_languages ON titles.cms_id=title_original_languages.title_id
-    LEFT JOIN languages ON title_original_languages.original_language_id=languages.cms_id
     LEFT JOIN title_catalogs ON title_catalogs.title_id=titles.cms_id
     WHERE NOT titles.deleted
   LOOP
@@ -94,7 +92,7 @@ BEGIN
           tname.trans_string as "name",
           trole.trans_string as "role",
           tdesc.trans_string as "description",
-          (SELECT json_agg(titles.guid ORDER BY t2.title_id) FROM title_person_roles t2 JOIN titles ON t2.title_id=titles.cms_id WHERE t2.person_id=title_person_roles.person_id AND t2.title_id<>tid AND NOT t2.deleted and NOT titles.deleted) as "relatedAssets"
+          (SELECT json_agg(guid) FROM (SELECT titles.guid FROM title_person_roles t2 JOIN titles ON t2.title_id=titles.cms_id WHERE t2.person_id=title_person_roles.person_id AND t2.title_id<>tid AND NOT t2.deleted and NOT titles.deleted LIMIT 5) t) as "relatedAssets"
         FROM title_person_roles
           JOIN persons ON title_person_roles.person_id=persons.cms_id
           JOIN person_name_translatable_strings ON title_person_roles.person_id=person_name_translatable_strings.person_id
@@ -117,7 +115,7 @@ BEGIN
           tname.trans_string as "name",
           trole.trans_string as "role",
           tdesc.trans_string as "description",
-          (SELECT json_agg(titles.guid ORDER BY t2.title_id) FROM title_person_roles t2 JOIN titles ON t2.title_id=titles.cms_id WHERE t2.person_id=title_person_roles.person_id AND t2.title_id<>tid AND NOT t2.deleted and NOT titles.deleted) as "relatedAssets"
+          (SELECT json_agg(guid) FROM (SELECT titles.guid FROM title_person_roles t2 JOIN titles ON t2.title_id=titles.cms_id WHERE t2.person_id=title_person_roles.person_id AND t2.title_id<>tid AND NOT t2.deleted and NOT titles.deleted LIMIT 5) t) as "relatedAssets"
         FROM title_person_roles
           JOIN persons ON title_person_roles.person_id=persons.cms_id
           JOIN person_name_translatable_strings ON title_person_roles.person_id=person_name_translatable_strings.person_id
@@ -139,6 +137,9 @@ BEGIN
 
     -- close mediaLangs and mediaAsset
     mediaasset:=mediaasset||']}';
+
+    -- remove ",}" occurences caused by removal of trailing null value elements
+    mediaasset:=replace(mediaasset, ',}', '}');
     RETURN NEXT;
   END LOOP;
 END;

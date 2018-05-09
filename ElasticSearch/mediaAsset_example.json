@@ -3,7 +3,7 @@
   "seoID": "the-flash/season-4/8crisis-on-earth-x-iii",
   "assetType": "Episode",
   "originalName": "Crisis on Earth-X (III)",
-  "originalLanguage": "ar",
+  "originalLanguages": ["en", "ar"],
   "duration": 1920,
   "genres": ["Action", "Comedy"],
   "keywords": ["Test_Sve"],
