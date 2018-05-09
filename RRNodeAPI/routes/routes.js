@@ -48,21 +48,22 @@ var appRouter = function (app) {
     console.log('in routes.js assets/id service called');
     //req.params.id gives access to the value of the id parameter in the URL
     let assetId=req.params.id;
+    // parameters lang and length hold the desired language 
     let synopsisLang = req.query.lang;
-    let synopsisLength = req.query.length;
+    l
+
+    // set defaults in case parameters are not given
 
     if (synopsisLang === undefined){
       synopsisLang = "en";
     }
 
-    if (synopsisLength === undefined){
-      synopsisLength = 'short';
-    }
+ 
 
     console.log('asset id:'+ assetId);
-    console.log('Synopsis Language Param: '+ synopsisLang + ' Synopsis Length Param: ' + synopsisLength);
+    console.log('Synopsis Language Param: '+ synopsisLang);
     //this calls the assetID function
-    assetSynopsis(assetId, synopsisLang, synopsisLength)
+    assetSynopsis(assetId, synopsisLang)
     .then(function(data) {
       res.status(200).send(data);
     })
