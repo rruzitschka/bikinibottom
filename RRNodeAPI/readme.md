@@ -1,6 +1,6 @@
-This is a NodeJS application using express.
+This is a Proof of Concept NodeJS application using express. It access the sample asset metadata hosted in our Elastic Search instance.
 
-Starting app.js will start the webs server listening on port 3000.
+Starting app.js will start the web server listening on port 3000.
 
 So point your browser to http://localhost:3000/
 
