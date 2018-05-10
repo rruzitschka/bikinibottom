@@ -1,10 +1,10 @@
-// This function retrieves the synopsis for the asset witht the specified ID
-// query parameters: lang  (language) and length (short, medium, long)
+// This function retrieves the actors for the asset witht the specified ID
+// query parameters: lang  (language) 
 "use strict";
 
-var mediaLangIndex = require('../findlangindex.js');
 var request = require ('request');
 var elasticSearch = require('elasticsearch');
+var mediaLangIndex = require('../findlangindex.js');
 
 module.exports = function(assetsID, synopsisLanguage) {
  
@@ -18,10 +18,10 @@ module.exports = function(assetsID, synopsisLanguage) {
     });
   
     var hits;
-    var resultSynopsis;
+    var resultActors;
 
   
-    console.log('assetID in assetsynopsis.js: ' + assetsID);
+    console.log('assetID in assetactors.js: ' + assetsID);
 
 //create asynchronuous search request that looks for the asset with the proper assetID
 
@@ -41,16 +41,17 @@ module.exports = function(assetsID, synopsisLanguage) {
      
      // store the mediaLang JSON array    
 
-    let mediaLangs = hits[0]._source.mediaLangs;
+      let mediaLangs = hits[0]._source.mediaLangs;
+      let langIndex = mediaLangIndex(mediaLangs,synopsisLanguage);
 
-    let langIndex = mediaLangIndex(mediaLangs,synopsisLanguage);
 
-    // fetch proper synopsis attribute from object
 
-      resultSynopsis = hits[0]._source.mediaLangs[langIndex].synopsis;
-      console.log(resultSynopsis);
+    // fetch proper actors array from object
+
+      resultActors = hits[0]._source.mediaLangs[langIndex].actors;
+      console.log(resultActors);
     // resolve promise with synopsis array  
-      resolve(resultSynopsis);
+      resolve(resultActors);
     }, function (error) {
       console.trace(error.message);
     });

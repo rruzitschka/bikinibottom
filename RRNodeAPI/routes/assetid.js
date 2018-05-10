@@ -12,7 +12,7 @@ module.exports = function(assetsID) {
     });
   
     var hits;
-  //edit
+  
     console.log('assetID in assetsID.js: ' + assetsID);
     client.search({
       body:{
@@ -21,9 +21,9 @@ module.exports = function(assetsID) {
             _id  : assetsID
           }
         }
-      }
-      
-    }).then(function (body) {
+      }   
+    })
+    .then(function (body) {
       hits = body.hits.hits;
       console.log("Hits in AssetID.js" + hits);
       resolve(hits);
