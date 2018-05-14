@@ -19,6 +19,6 @@ module.exports = function(mediaLangArray, requestedLang) {
     if (found !== true){
         langIndex = 0;
     }
-    console.log('Lang index in findlangindex.js'+langIndex);
+    console.log('Lang index in findlangindex.js: '+langIndex);
     return(langIndex);
 }
