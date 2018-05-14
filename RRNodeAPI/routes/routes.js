@@ -44,7 +44,11 @@ var appRouter = function (app) {
     console.log('asset id:'+ assetId);
     //this calls the assetID function
     assetid(assetId).then(function(data) {
-      res.status(200).send(data);
+      if(data.length > 0) {
+        res.status(200).send(data);
+      } else {
+        res.status(400).send('Asset not found');
+      }
     })
     .catch( function() {
       console.log('Promise catched');
@@ -76,7 +80,11 @@ var appRouter = function (app) {
     //this calls the assetID function
     assetSynopsis(assetId, synopsisLang)
     .then(function(data) {
-      res.status(200).send(data);
+      if(data.length > 0) {
+        res.status(200).send(data);
+      } else {
+        res.status(400).send('Asset not found');
+      }
     })
     .catch( function() {
       console.log('Promise catched');
@@ -105,7 +113,11 @@ var appRouter = function (app) {
     //this calls the assetID function
     assetActors(assetId, actorsLang)
     .then(function(data) {
-      res.status(200).send(data);
+      if(data.length > 0) {
+        res.status(200).send(data);
+      } else {
+        res.status(400).send('Asset not found');
+      }
     })
     .catch( function() {
       console.log('Promise catched');
