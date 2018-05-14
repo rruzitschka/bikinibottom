@@ -25,7 +25,7 @@ module.exports = function(assetsID) {
     })
     .then(function (body) {
       hits = body.hits.hits;
-      console.log("Hits in AssetID.js" + hits);
+      console.log("Hits in AssetID.js:" + hits);
       resolve(hits);
     }, function (error) {
       console.trace(error.message);
