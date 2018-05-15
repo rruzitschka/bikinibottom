@@ -1,6 +1,7 @@
 
 var request = require ('request');
 var elasticSearch = require('elasticsearch');
+var ESIndexURL = require('./indexURL.js').ES_URL;
 
 //initalize the elastic search client
 
@@ -10,7 +11,7 @@ module.exports = function(queryString) {
   return new Promise(function (resolve, reject){
     
     var client = new elasticSearch.Client ({
-      host: 'https://search-sve-test-bdwhx3oa447ij3yezaokfdeup4.us-east-1.es.amazonaws.com/mediaasset',
+      host: ESIndexURL,
       log: 'info'
     });
   
