@@ -44,16 +44,16 @@ var appRouter = function (app) {
     console.log('asset id:'+ assetId);
     //this calls the assetID function
     assetid(assetId).then(function(data) {
-      if(data.length > 0) {
-        res.status(200).send(data);
-      } else {
+      if(!data) {
         res.status(400).send('Asset not found');
+      } else {
+        res.status(200).send(data);
       }
     })
-    .catch( function() {
+    .catch( function(error) {
       console.log('Promise catched');
+      res.status(404).send(error);
     })
-   
   });
 
 
@@ -80,10 +80,11 @@ var appRouter = function (app) {
     //this calls the assetID function
     assetSynopsis(assetId, synopsisLang)
     .then(function(data) {
-      if(data.length > 0) {
-        res.status(200).send(data);
-      } else {
+
+      if(!data) {
         res.status(400).send('Asset not found');
+      } else {
+        res.status(200).send(data);
       }
     })
     .catch( function() {

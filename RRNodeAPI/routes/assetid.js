@@ -28,8 +28,13 @@ module.exports = function(assetsID) {
     })
     .then(function (body) {
       hits = body.hits.hits;
-      console.log("Hits in AssetID.js:" + hits);
-      resolve(hits);
+      if(hits.length !== 0){
+        console.log("Hits in AssetID.js:" + hits);
+        resolve(hits);
+      } else {
+        reject('Asset with IF not found');
+      }
+
     }, function (error) {
       console.trace(error.message);
     });
