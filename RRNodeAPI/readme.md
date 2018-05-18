@@ -6,9 +6,11 @@ So point your browser to http://localhost:3000/
 
 It implements a sample RESTful API supporting the following requests:
 
-GET /v1/assets?q=searchtext
+GET /v1/assets?q=searchtext&format=alexa
 
 Response is a JSON document, response is limited to 10 hits currently (default ElasticSearch setting)
+the q Parameter is optional, the value is trasnferred to ElasticSearch
+If the optional paramter format is used and the value is 'alexa' then the response will contain only the movie titles and the guids.
 
 GET /v1/assets/id
 
