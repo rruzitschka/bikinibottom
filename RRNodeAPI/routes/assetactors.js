@@ -3,9 +3,8 @@
 "use strict";
 
 var request = require ('request');
-var elasticSearch = require('elasticsearch');
-var mediaLangIndex = require('../findlangindex.js');
 var getAssetbyID = require('./assetid.js');
+var _ = require ('underscore');
 
 module.exports = function(assetID, language) {
  
@@ -17,13 +16,12 @@ module.exports = function(assetID, language) {
      // store the mediaLang JSON array    
 
       let mediaLangs = hits[0]._source.mediaLangs;
-      let langIndex = mediaLangIndex(mediaLangs,language);
       let resultActors;
 
 
     // fetch proper actors array from object
 
-      resultActors = hits[0]._source.mediaLangs[langIndex].actors;
+      resultActors = _.findWhere(mediaLangs, {langId : language}).actors;
       console.log(resultActors);
     // resolve promise with actors array  
       resolve(resultActors);

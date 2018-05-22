@@ -6,6 +6,7 @@ var mediaLangIndex = require('../findlangindex.js');
 var request = require ('request');
 var elasticSearch = require('elasticsearch');
 var getAssetbyID = require('./assetid.js');
+var _ = require('underscore');
 
 module.exports = function(assetID, synopsisLanguage) {
  
@@ -16,24 +17,17 @@ module.exports = function(assetID, synopsisLanguage) {
 
     let mediaLangs = hits[0]._source.mediaLangs;
     let timeStamp1 = Date.now();
-    let langIndex = mediaLangIndex(mediaLangs,synopsisLanguage);
-    console.log(Date.now() - timeStamp1);
     let resultSynopsis;
 
-    // fetch proper synopsis attribute from object
-    resultSynopsis = hits[0]._source.mediaLangs[langIndex].synopsis;
 
-    
-    // resolve promise with synopsis array  
+    resultSynopsis = _.findWhere(mediaLangs, {langId : synopsisLanguage}).synopsis;
+    console.log(Date.now() - timeStamp1);
     resolve(resultSynopsis);  
 
    }).catch(function(error){
 
     reject(error);
    });
-    
-   
-
 
   })
 
