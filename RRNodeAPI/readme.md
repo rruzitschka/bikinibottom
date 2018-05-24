@@ -35,3 +35,14 @@ GET /v1/assets/id/crew?lang=en
 Response is the actors JSON arrray that holds the crew list for the specified asset. The required language is specified in the parameter lang.
 
 Parameters are optional, if not specified the server uses te default values lang=en.
+
+For usage by our Alexa Skill we introduce new API calls:
+
+GET /v1/alexa/assets?q=xy&synopsis=true
+
+The query string sent with the parameter most likely is the result of the voice recognition process of Alexa.
+The response will contain one or more assets that match the query string. 
+
+The parameter synopsis is optional, if it is available and set to the value true, the response will contain the synopsis for the queried asset.
+
+GET /v1/alexa/cinemas?q=xy
