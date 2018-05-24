@@ -22,7 +22,7 @@ module.exports = function(assetID, language) {
     // fetch proper actors array from object
 
       resultActors = _.findWhere(mediaLangs, {langId : language}).actors;
-      console.log(resultActors);
+    //  console.log(resultActors);
     // resolve promise with actors array  
       resolve(resultActors);
     })
