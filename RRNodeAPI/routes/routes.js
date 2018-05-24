@@ -24,10 +24,11 @@ var appRouter = function (app) {
     //req.query.q gives access to the value of the q parameter in the URL
     let queryString=req.query.q;
     let format = req.query.format;
+    let queryParams=req.query;
    
     console.log('Assets requested with query string: ' + queryString);
     
-    assets(queryString, format).then(function(data) {
+    assets(queryParams, '').then(function(data) {
   
         res.status(200).send(data);
  
