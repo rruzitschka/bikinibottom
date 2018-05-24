@@ -1,5 +1,5 @@
 // this function takes the voice input from alexa, and tries to find a matching movie from ElasticSearch
-// then it calls the movieshowtimes API and retrives cinemas for the movie
+// then it calls the movieshowtimes API and retrieves cinemas for the movie
 // result should be a JSON object that include strings digestible from Alexa.
 
 // parameters movieString: the parameter delivered from Alexa Voice recognition.
