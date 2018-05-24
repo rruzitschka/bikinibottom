@@ -5,11 +5,12 @@ var request = require ('request');
 var elasticSearch = require('elasticsearch');
 var ESIndexURL = require('./indexURL.js').ES_URL;
 var formatAlexa = require ('./assets_alexa');
+var _ = require('underscore');
 
 //initalize the elastic search client
 
 
-module.exports = function(queryString, format) {
+module.exports = function(queryParams, format) {
 
   return new Promise(function (resolve, reject){
     
@@ -18,6 +19,17 @@ module.exports = function(queryString, format) {
       log: 'info'
     });
   
+   var queryString = '';
+   var synopsisFlag = false;
+   
+  if (queryParams.hasOwnProperty('q') && _.isString(queryParams.q)){
+    queryString = queryParams.q;
+  }
+
+  if (queryParams.hasOwnProperty('synopsis') && queryParams.synopsis === 'true'){
+    synopsisFlag= true;
+  } 
+
     var hits;
   //edit
     console.log('querystring in assets.js: '+queryString);
@@ -31,7 +43,7 @@ module.exports = function(queryString, format) {
       if (format !== 'alexa'){
              resolve(hits); 
       } else {
-        resolve(formatAlexa(hits));
+        resolve(formatAlexa(hits, synopsisFlag));
       }
 
     }, function (error) {
