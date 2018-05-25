@@ -19,17 +19,23 @@ module.exports = function (hits, synopsisFlag) {
          } else {
             
             let actorsArray = element._source.mediaLangs[0].actors;
+
             let actorsNameArray = [];
             AssetTitle.genres = [];
+            AssetTitle.actors=[];
 
             AssetTitle.name = element._source.originalName;
             AssetTitle.language = element._source.mediaLangs[0].langId;
             AssetTitle.ProductionYear = element._source.productionYear;
-            actorsArray.forEach((actor) => {
-                console.log (_.pick(actor, 'name'));
-                actorsNameArray.push(_.pick(actor, 'name'));
-            });
-            AssetTitle.actors = actorsNameArray;
+            // check if assets actors array is not empty
+            if(actorsArray !== undefined && actorsArray.length > 0 ){
+                            actorsArray.forEach((actor) => {
+                            console.log (_.pick(actor, 'name'));
+                            actorsNameArray.push(_.pick(actor, 'name'));
+                  });
+                AssetTitle.actors = actorsNameArray;
+            }
+
             if(element._source.hasOwnProperty('genres')){
                 AssetTitle.genres = element._source.genres;
             }
