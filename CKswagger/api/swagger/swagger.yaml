@@ -1,0 +1,193 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: bikinibottom
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /v1
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /assets:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: assets
+    get:
+      description: Does a 'free text' search and returns the list of matching media assets.
+      # used as the method name of the controller
+      operationId: searchAssets
+      parameters:
+        - name: q
+          in: query
+          description: Defines the 'free text' search criterion.
+          required: true
+          type: string
+        - name: from
+          in: query
+          description: Defines the first asset from the hits to be returned, default is 0.
+          required: false
+          type: string
+        - name: size
+          in: query
+          description: Defines the maximum assets to be returned, default is 10.
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Success, at least one media asset was found.
+          schema:
+            type: array
+            items:
+              # a pointer to the Asset definition
+              $ref: "#/definitions/Asset"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /assets/{id}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: assets
+    get:
+      description: Returns the media asset with the given 'id'.
+      # used as the method name of the controller
+      operationId: getAssetById
+      parameters:
+        - name: id
+          in: path
+          description: The 'id' of the media asset to be returned.
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success, media asset with 'id' found.
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/Asset"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  # Definition of the Asset metadata == Title
+  Asset:
+    required: 
+      - "asset_id"
+      - "seoID"
+      - "assetType"
+      - "originalName"
+      - "originalLanguages"
+      - "duration"
+      - "publishFlag"
+      - "productionYear"
+      - "mediaLangs"
+    properties: 
+      asset_id: 
+        type: "string"
+      seoID: 
+        type: "string"
+      assetType: 
+        type: "string"
+      assetSubType:
+        type: "string"
+      originalName: 
+        type: "string"
+      originalLanguages: 
+        type: "array"
+        items:
+          type: "string"
+      duration: 
+        type: "number"
+      genres: 
+        type: "array"
+        items: 
+          type: "string"
+      keywords: 
+        type: "array"
+        items: 
+          type: "string"
+      publishFlag: 
+        type: "boolean"
+      validFrom: 
+        type: "string"
+      validTo: 
+        type: "string"
+      productionYear: 
+        type: "number"
+      mediaLangs: 
+        type: "array"
+        items: 
+          type: "object"
+          properties: 
+            langId: 
+              type: "string"
+            name: 
+              type: "string"
+            shortName: 
+              type: "string"
+            synopsis: 
+              required: 
+                - "short"
+                - "medium"
+                - "long"
+              properties: 
+                short: 
+                  type: "string"
+                medium: 
+                  type: "string"
+                long: 
+                  type: "string"
+              type: "object"
+            actors: 
+              type: "array"
+              items: 
+                type: "object"
+                properties: 
+                  personId: 
+                    type: "string"
+                  name: 
+                    type: "string"
+                  role: 
+                    type: "string"
+                  description: 
+                    type: "string"
+                  relatedAssets: 
+                    type: "array"
+                    items: 
+                      type: "string"
+            crew: 
+              type: "array"
+              items: 
+                type: "object"
+                properties: 
+                  personId: 
+                    type: "string"
+                  name: 
+                    type: "string"
+                  role: 
+                    type: "string"
+                  description: 
+                    type: "string"
+                  relatedAssets: 
+                    type: "array"
+                    items: 
+                      type: "string"
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
