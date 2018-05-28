@@ -46,3 +46,7 @@ The response will contain one or more assets that match the query string.
 The parameter synopsis is optional, if it is available and set to the value true, the response will contain the synopsis for the queried asset.
 
 GET /v1/alexa/cinemas?q=xy
+
+
+GET /v1/alexa/genres
+The response contains a list of all exisiting genres
