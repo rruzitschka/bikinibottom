@@ -3,6 +3,7 @@ var assetid = require('./assetid.js');
 var assetSynopsis = require('./assetsynopsis.js');
 var assetActors = require('./assetactors.js');
 var assetCrew = require('./assetcrew.js');
+var genres = require('./genres.js');
 var findLangIndex = require ('../findlangindex.js');
 var _ = require('underscore');
 
@@ -177,8 +178,18 @@ app.get("/v1/alexa/assets", function (req, res) {
 });
 
 
+app.get("/v1/alexa/genres", function (req, res) {
 
+  genres().then(function(data) {
 
+      res.status(200).send(data);
+
+  })
+  .catch( function() {
+    console.log('Promise catched');
+  })
+
+});
 
 }
 
