@@ -4,7 +4,7 @@
 
 var request = require ('request');
 var getAssetbyID = require('./assetid.js');
-var _ = require('underscore');
+var _ = require('lodash');
 
 module.exports = function(assetID, language) {
  
@@ -18,8 +18,7 @@ module.exports = function(assetID, language) {
       let mediaLangs = hits[0]._source.mediaLangs;
     
     // fetch proper crew array from object
-      resultCrew = _.findWhere(mediaLangs, {langId : language}).crew;
-      console.log(resultCrew);
+      resultCrew = _.find(mediaLangs, {langId : language}).crew;
     // resolve promise with crew array  
       resolve(resultCrew);
     })

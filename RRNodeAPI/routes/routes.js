@@ -5,7 +5,9 @@ var assetActors = require('./assetactors.js');
 var assetCrew = require('./assetcrew.js');
 var genres = require('./genres.js');
 var findLangIndex = require ('../findlangindex.js');
-var _ = require('underscore');
+var _ = require('lodash');
+
+
 
 
 var appRouter = function (app) {

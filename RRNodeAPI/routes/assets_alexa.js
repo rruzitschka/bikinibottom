@@ -1,23 +1,14 @@
 // takes the results from assets.js, extracts all the asset titles and
 // creates a JSON response that can be returned to Alexa
-// if the synopsis falg is set, the response also contains the sysnopsis, other attributes (actors, genres, production year) are omitted.
+// The response will include also the short form of the sysnopsis
 
-var _ = require('underscore');
+var _ = require('lodash');
 
-module.exports = function (hits, synopsisFlag) {
+module.exports = function (hits) {
     var TitleList = [];
     hits.forEach(element => {
         let AssetTitle = {};
-        if(synopsisFlag === true){
-            AssetTitle.name = element._source.originalName;
-            AssetTitle.language = element._source.mediaLangs[0].langId;
-            AssetTitle.synopsis = element._source.mediaLangs[0].synopsis.long;
-            AssetTitle.id = element._id;
- 
-
-
-         } else {
-            
+  
             let actorsArray = element._source.mediaLangs[0].actors;
 
             let actorsNameArray = [];
@@ -40,9 +31,9 @@ module.exports = function (hits, synopsisFlag) {
                 AssetTitle.genres = element._source.genres;
             }
             AssetTitle.id = element._id;
-          
+            AssetTitle.synopsis = element._source.mediaLangs[0].synopsis.short;
 
-      }
+      
      
       TitleList.push(AssetTitle);
 

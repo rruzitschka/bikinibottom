@@ -38,15 +38,26 @@ Parameters are optional, if not specified the server uses te default values lang
 
 For usage by our Alexa Skill we introduce new API calls:
 
-GET /v1/alexa/assets?q=xy&synopsis=true
+GET /v1/alexa/assets?q=xy&exactMatch=true
 
 The query string sent with the parameter most likely is the result of the voice recognition process of Alexa.
 The response will contain one or more assets that match the query string. 
 
-The parameter synopsis is optional, if it is available and set to the value true, the response will contain the synopsis for the queried asset.
+The queryString can also be modified in a way that it matches specific attributes of the asset metadata:
+
+q=orginalName:A Woman in White      searches for an asset with an Original name of "A Woman in White", the search may yield multiple hits
+
+q=originalName:A%20Woman%20in%20%white&exactMatch=true  will give exctly one result if an exact match can be found.
+
+The response will include for each asset: genres, actors, name, language, Production Year, UniqueID, synopsis 
+
+GET /v1/alexa/genres
+The response contains a list of all exisiting genres
+
 
 GET /v1/alexa/cinemas?q=xy
 
 
-GET /v1/alexa/genres
-The response contains a list of all exisiting genres
+API Keys
+
+Generally, the API supports request authentication via an API key. this is a global configuration parameter that is currently switched off. This means that the API key is not checked at the moment.

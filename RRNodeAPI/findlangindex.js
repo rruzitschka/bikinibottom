@@ -1,7 +1,7 @@
 // finds the index of the appropriate mediaLang element in the media lang array and retruns it
 //called with the medialang array and the requested language
 
-var _ = require ('underscore');
+var _ = require('lodash');
 
 module.exports = function(mediaLangArray, requestedLang) {
 

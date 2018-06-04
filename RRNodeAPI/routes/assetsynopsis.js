@@ -6,7 +6,7 @@ var mediaLangIndex = require('../findlangindex.js');
 var request = require ('request');
 var elasticSearch = require('elasticsearch');
 var getAssetbyID = require('./assetid.js');
-var _ = require('underscore');
+var _ = require('lodash');
 
 module.exports = function(assetID, synopsisLanguage) {
  
@@ -20,7 +20,7 @@ module.exports = function(assetID, synopsisLanguage) {
     let resultSynopsis;
 
 
-    resultSynopsis = _.findWhere(mediaLangs, {langId : synopsisLanguage}).synopsis;
+    resultSynopsis = _.find(mediaLangs, {langId : synopsisLanguage}).synopsis;
     console.log(Date.now() - timeStamp1);
     resolve(resultSynopsis);  
 

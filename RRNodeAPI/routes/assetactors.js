@@ -4,7 +4,7 @@
 
 var request = require ('request');
 var getAssetbyID = require('./assetid.js');
-var _ = require ('underscore');
+var _ = require ('lodash');
 
 module.exports = function(assetID, language) {
  
@@ -21,7 +21,7 @@ module.exports = function(assetID, language) {
 
     // fetch proper actors array from object
 
-      resultActors = _.findWhere(mediaLangs, {langId : language}).actors;
+      resultActors = _.find(mediaLangs, {langId : language}).actors;
     //  console.log(resultActors);
     // resolve promise with actors array  
       resolve(resultActors);

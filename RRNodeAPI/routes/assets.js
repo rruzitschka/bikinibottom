@@ -3,9 +3,9 @@
 
 var request = require ('request');
 var elasticSearch = require('elasticsearch');
-var ESIndexURL = require('./indexURL.js').ES_URL;
+var ESIndexURL = require('../config/config.js').ES_URL;
 var formatAlexa = require ('./assets_alexa');
-var _ = require('underscore');
+var _ = require('lodash');
 
 //initalize the elastic search client
 
@@ -20,30 +20,53 @@ module.exports = function(queryParams, format) {
     });
   
    var queryString = '*';
-   var synopsisFlag = false;
+   var exactMatch = false; 
+   var queryStringParsed = [];
+   var queryAttribute;
+   var queryValue;
    
   if (queryParams.hasOwnProperty('q') && _.isString(queryParams.q)){
     queryString = queryParams.q;
+    queryStringParsed = _.split(queryString, ':');
+    queryAttribute = queryStringParsed[0];
+    queryValue = queryStringParsed[1];
   }
 
-  if (queryParams.hasOwnProperty('synopsis') && queryParams.synopsis === 'true'){
-    synopsisFlag= true;
+  if (queryParams.hasOwnProperty('exactMatch') && queryParams.exactMatch === 'true'){
+    exactMatch = true;
   } 
 
     var hits;
-  //edit
-    console.log('querystring in assets.js: ' + queryString);
-    console.log('format in assets.js: ' + format);
-    client.search({
-      q: queryString,
-      _sourceExclude: '*relatedAssets'
-    }).then(function (body) {
+    var query = {};
+
+    if(exactMatch){
+      query = {
+          body: {
+            query:{
+             match_phrase: {
+               // this dynamically sets the search attribute - ES6 syntax
+              [queryAttribute]: queryValue
+              } 
+            }  
+          },
+          _sourceExclude: '*relatedAssets'
+        };
+
+    } else {
+      query = {
+        q: queryString,
+        _sourceExclude: '*relatedAssets'
+      }
+    }
+
+    client.search(query)
+    .then(function (body) {
       hits = body.hits.hits;
       console.log("Hits in Assets.js" + hits);
       if (format !== 'alexa'){
              resolve(hits); 
       } else {
-        resolve(formatAlexa(hits, synopsisFlag));
+        resolve(formatAlexa(hits));
       }
 
     }, function (error) {

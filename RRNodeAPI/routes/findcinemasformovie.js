@@ -9,7 +9,7 @@
 
 var request = require ('request');
 var elasticSearch = require('elasticsearch');
-var ESIndexURL = require('./indexURL.js').ES_URL;
+var ESIndexURL = require('../config/config.js').ES_URL;
 
 //initalize the elastic search client
 
