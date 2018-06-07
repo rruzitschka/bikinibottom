@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "debug": "^3.1.0",
     "elasticsearch": "^14.2.2",
     "express": "^4.16.3",
     "faker": "^4.1.0",
