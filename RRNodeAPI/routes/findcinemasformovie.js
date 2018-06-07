@@ -10,11 +10,21 @@
 var request = require ('request');
 var elasticSearch = require('elasticsearch');
 var ESIndexURL = require('../config/config.js').ES_URL;
+const showtimes = require('../interfaces/showtimes');
 
 //initalize the elastic search client
 
 
-module.exports = function(movieString, Country, City, dayRange, timeRange) {
+module.exports = async function(movieString, Country, City, dayRange, timeRange) {
+
+  // try {
+    const response = await showtimes.findCinemasByMovie(movieString,Country, City, dayRange, timeRange);
+    return response;
+  // }
+  // catch(err) {
+  //   console.log('Error on showtimes.findCinemasByMovie: ',err);
+  // }
+
   /*
   return new Promise(function (resolve, reject){
     
@@ -40,7 +50,7 @@ module.exports = function(movieString, Country, City, dayRange, timeRange) {
   })
   */
 
-  return('Terminator 1 wird heute im Apollo Kino um 19h gespielt');
+  // return('Terminator 1 wird heute im Apollo Kino um 19h gespielt');
  
 
 }

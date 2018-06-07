@@ -5,6 +5,8 @@ var assetActors = require('./assetactors.js');
 var assetCrew = require('./assetcrew.js');
 var genres = require('./genres.js');
 var findLangIndex = require ('../findlangindex.js');
+var findcinemasformovie = require('./findcinemasformovie');
+
 var _ = require('lodash');
 
 
@@ -158,6 +160,32 @@ var appRouter = function (app) {
 
 
 });
+
+  // get the showtimes for a movie, details are in the query string:
+  // q=<movieString> name of the movie to seek for the showtimes
+  // country=AT      seeks in Austria
+  // city=Wien       seeks for acertain city only
+  // na: dayrange=1      seeks for today only
+  // na: timeRange=16-20 seeks for start of movie between 16h-20h
+  app.get("/v1/showtimes", async function (req, res) {
+    const movieString = req.query.q;
+    const city = req.query.city;
+    const country = req.query.country;
+    if (movieString===undefined || city===undefined ) {
+      // error
+      res.status(400).send('The query parameters "q" and "city" are mandatory!');
+    }  
+    try {
+      const response = await findcinemasformovie(movieString, country, city);
+      res.send(response);
+      return;  
+    }
+    catch(err) {
+      const HTTPCode = err.HTTPCode || 500;
+      res.status(HTTPCode).send(err.message);
+    }
+  });
+
 
 // Alexa API
 
