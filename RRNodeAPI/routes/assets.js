@@ -28,8 +28,30 @@ module.exports = function(queryParams, format) {
   if (queryParams.hasOwnProperty('q') && _.isString(queryParams.q)){
     queryString = queryParams.q;
     queryStringParsed = _.split(queryString, ':');
-    queryAttribute = queryStringParsed[0];
-    queryValue = queryStringParsed[1];
+   
+    // check if the query parmeter is separated by a colon 
+    // this means there is a specific attribute required and a spcific value for this attribute should be searched
+    // if this is not valid, the query attribute will default to orignalName 
+    // this will only be used if the exactMatch parameter is set
+    // exact match can only be used to match for specific given attributes
+
+    if(queryStringParsed.length === 2){
+      if(_.isString(queryStringParsed[0]) && queryStringParsed[0].length > 0){
+        queryAttribute = queryStringParsed[0];
+      } else{
+        queryAttribute = 'originalName';
+      }
+      if(_.isString(queryStringParsed[1]) && queryStringParsed[1].length > 0){
+        queryValue = queryStringParsed[1];
+      } else{
+        queryValue = queryString;
+      }
+
+    } else {
+      queryAttribute = 'originalName';
+      queryValue = queryString;
+    } 
+
   }
 
   if (queryParams.hasOwnProperty('exactMatch') && queryParams.exactMatch === 'true'){
@@ -38,6 +60,8 @@ module.exports = function(queryParams, format) {
 
     var hits;
     var query = {};
+    console.log(queryAttribute);
+    console.log(queryValue);
 
     if(exactMatch){
       query = {
@@ -58,7 +82,7 @@ module.exports = function(queryParams, format) {
         _sourceExclude: '*relatedAssets'
       }
     }
-
+    console.log(JSON.stringify(query));
     client.search(query)
     .then(function (body) {
       hits = body.hits.hits;
