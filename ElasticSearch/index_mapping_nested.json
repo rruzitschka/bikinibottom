@@ -1,0 +1,97 @@
+{
+  "mappings": {
+    "_doc": {
+      "dynamic_templates": [
+        {
+          "text_default_keyword": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "originalName": {
+          "type": "text"
+        },
+        "mediaLangs": {
+          "type": "nested",
+          "properties": {
+            "name": {
+              "type": "text"
+            },
+            "shortName": {
+              "type": "text"
+            },
+            "synopsis": {
+              "properties": {
+                "long": {
+                  "type": "text"
+                },
+                "medium": {
+                  "type": "text"
+                },
+                "short": {
+                  "type": "text"
+                }
+              }
+            },
+            "actors": {
+              "type": "nested",
+              "properties": {
+                "description": {
+                  "type": "text"
+                },
+                "name": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "role": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "crew": {
+              "type": "nested",
+              "properties": {
+                "description": {
+                  "type": "text"
+                },
+                "name": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "role": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
