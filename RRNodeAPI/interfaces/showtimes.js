@@ -1,5 +1,7 @@
 // showtimes API integration
 'use strict';
+
+// activate logglevel with DEBUG=app:dev
 const devDebug = require('debug')('app:dev');
 const request = require('request');
 //const debug = require('debug');
@@ -21,8 +23,14 @@ const requestOptions = {
   }
 }
 
+//############################################
+// default values
+//############################################
 // set the default language
 let defaultLang = 'de';
+// set the default count of showtimes response
+let defaultShowtimesCount = 3;
+
 
 //############################################
 // PUBLIC Functions
@@ -46,7 +54,7 @@ async function findCinemasByMovie(movie,country,city,dayRange,timeRange) {
     }
     const cinemas = await _findCinemasPlayMovie(foundMovie.movie_id,city_id,dayRange,timeRange);
 
-    const answer = _createAnswerString(foundMovie.title,cinemas,1);
+    const answer = _createAnswerString(foundMovie.title,cinemas,defaultShowtimesCount);
     console.log(`findCinemasByMovie() returns answer: "${answer}"`);
     return answer;
   // }
@@ -119,7 +127,7 @@ async function _getMovieID(movie) {
 }
 
 // fetch cinemas which play the movie with the given ID
-async function _findCinemasPlayMovie(movie_id,city_id) {
+async function _findCinemasPlayMovie(movie_id,city_id,dayRange,timeRange) {
   // let cinemas=[]; // return obj
   let timeFrom = new Date(Date.now()) ; // seek from now
   let timeTo = new Date(Date.now() + 6*3600*1000); //  to now + 6 hours
@@ -212,37 +220,67 @@ function createUri(reqObj) {
 // ...
 function _createAnswerString(title,cinemas,count) {
   let response = '';
-  let cinema_id;
+  let cinema_id, lastCinema_id=0;
   let cinemaName;
   let now = new Date(Date.now());
   let startTime;
+  let minutes, day;
   for (let i=0; i < count && i < cinemas.showtimes.length; i++) {
-    // fetch the showtime data
+    // fetch the next showtime data
     cinema_id = cinemas.showtimes[i].cinema_id;
     startTime = new Date(cinemas.showtimes[i].start_at);
     devDebug('startTime: ', startTime.getDate());
+
+    // get the 'when' the movie is played
+    if ( startTime.getMinutes() == 0 ) {
+      // suppress reporting of minutes
+      minutes = "";
+    }
+    else {
+      minutes = startTime.getMinutes();
+    }
+    if (startTime.getDate() === now.getDate()) {
+      // heute
+      day = ' wird heute ';
+    }
+    else if ( startTime.getDate() === (now.getDate()+1) ) {
+      // morgen
+      day = ' wird morgen ';
+    }
+    else {
+      // am XX-ten
+      day = ' wird am ' + startTime.getDate() + '.';
+    }
+
+    // get 'where' the movie is played
     let found = false;
     let ndx = 0;
     while (!found && ndx < cinemas.cinemas.length) {
       if (cinemas.cinemas[ndx].id === cinema_id ) {
         found = true;
         cinemaName = cinemas.cinemas[ndx].name;
-        if (startTime.getDate() === now.getDate()) {
-          // heute
-          response += title + ' wird heute im ' + cinemaName + ' um ' + startTime.getHours() + ' Uhr gespielt.';
-        }
-        else if ( startTime.getDate() === (now.getDate()+1) ) {
-          // morgen
-          response += title + ' wird morgen im ' + cinemaName + ' um ' + startTime.getHours() + ' Uhr gespielt.';
-        }
-        else {
-          // am XX-ten
-          response += title + ' wird am ' + startTime.getDate() + '. im ' + cinemaName + ' um ' + startTime.getHours() + ' Uhr gespielt.';
-        }
       }
       ndx++;
     }
+    
+    // stitch together the answer for one 'showtime'
+    if ( cinema_id === lastCinema_id) {
+      // just add times
+      response += ' um ' + startTime.getHours() + ' Uhr '+ minutes; // + ' gespielt.';
+    }
+    else { // add new cinema to the answer
+      if ( response.length == 0) {
+        response = title; // add titles as the first element in the answer
+      }
+      else {
+        response += ' gespielt. Oder ';
+      }
+      response += day + ' im ' + cinemaName + ' um ' + startTime.getHours() + ' Uhr '+ minutes;
+    }
+    lastCinema_id = cinema_id;
   }
+  if (response.length > 0) // so there were added at least one showtime -> terminate the answer!
+    response += ' gespielt.';
   return response;
 }
 
