@@ -1,0 +1,14 @@
+{
+    "Default": [
+        "Bitte stelle mir noch eine Frage, oder ich muss mich abschalten."
+    ],
+    "TopTen": [
+        "Über welchen Film aus der Top Ten möchtest Du mehr Informationen haben?"
+    ],
+    "NewCinema": [
+        "Über welchen neuen Film möchtest Du mehr Informationen haben?"
+    ],
+    "Next": [
+        "Über welchen Film, der demnächst ins Kino kommt, möchtest Du mehr Informationen haben?"
+    ]
+}
