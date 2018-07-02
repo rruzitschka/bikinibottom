@@ -1,0 +1,46 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"time"
+)
+
+// define custom log time format
+type tlog struct{}
+
+func (t *tlog) Write(bytes []byte) (int, error) {
+	// in Go, concatting strings with "+" is faster than anything else
+	return fmt.Print(time.Now().Format("2006-01-02 15:04:05.999 ") + string(bytes))
+}
+
+func init() {
+	log.SetFlags(0) // disable default log time handling
+	log.SetOutput(new(tlog))
+}
+
+func shutdownHandler(srv *http.Server) {
+	sigint := make(chan os.Signal, 1)
+	signal.Notify(sigint, os.Interrupt)
+	<-sigint // wait for signal to arrive
+
+	log.Print("got SIGINT, shutting down server")
+	go func() { // enforce shutdown after 1 second
+		time.Sleep(time.Second)
+		log.Print("server didn't shutdown within 1s, exiting")
+	}()
+
+	if err := srv.Shutdown(context.Background()); err != nil {
+		log.Print(err)
+	}
+}
+
+func dieOnError(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
