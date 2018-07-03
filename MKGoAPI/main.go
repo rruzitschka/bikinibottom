@@ -8,7 +8,7 @@ import (
 	"github.com/olivere/elastic"
 )
 
-// command line arguments (call "./MKNodeAPI -h" for usage info)
+// command line arguments (call "./MKGoAPI -h" for usage info)
 var esURL = flag.String("es_url", "http://127.0.0.1:9200", "Elastic Search URL")
 
 func main() {
@@ -18,10 +18,7 @@ func main() {
 	log.Printf("connecting to ElasticSearch on '%s'", *esURL)
 	es, err := elastic.NewClient(
 		elastic.SetURL(*esURL),
-		// disable autodetection of new ES nodes being added during runtime,
-		// otherwise the client fails with "sniff timeout: no Elasticsearch node available"
-		// reason: AWS ES service doesn't expose internal node addresses
-		elastic.SetSniff(false),
+		elastic.SetSniff(false), // autodetection of new ES nodes doesn't work in AWS
 	)
 	dieOnError(err)
 
