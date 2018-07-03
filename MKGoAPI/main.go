@@ -12,11 +12,12 @@ import (
 var esURL = flag.String("es_url", "http://127.0.0.1:9200", "Elastic Search URL")
 
 func main() {
+	// parse command line arguments
 	flag.Parse()
 
 	// init Elastic Search client
 	log.Printf("connecting to ElasticSearch on '%s'", *esURL)
-	es, err := elastic.NewClient(
+	es, err := elastic.NewClient( // alternative: NewSimpleClient (light weight, single shot)
 		elastic.SetURL(*esURL),
 		elastic.SetSniff(false), // autodetection of new ES nodes doesn't work in AWS
 	)
@@ -30,8 +31,8 @@ func main() {
 	srv := &http.Server{Addr: ":80"}
 	registerHandlers(srv)
 
-	// register Ctrl-C handler
-	go shutdownHandler(srv)
+	// run Ctrl-C handler as goroutine
+	go sigIntHandler(srv)
 
 	// start server
 	log.Print("starting webserver on port 80")

@@ -22,7 +22,8 @@ func init() {
 	log.SetOutput(new(tlog))
 }
 
-func shutdownHandler(srv *http.Server) {
+// gracefully shutdown server on Ctrl-C / SIGINT
+func sigIntHandler(srv *http.Server) {
 	sigint := make(chan os.Signal, 1)
 	signal.Notify(sigint, os.Interrupt)
 	<-sigint // wait for signal to arrive
