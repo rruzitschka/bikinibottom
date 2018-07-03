@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func registerHandlers(srv *http.Server) {
+func registerRestHandlers(srv *http.Server) {
 	http.HandleFunc("/", hRoot)
 }
 

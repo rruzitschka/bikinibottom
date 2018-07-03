@@ -4,8 +4,6 @@ import (
 	"flag"
 	"log"
 	"net/http"
-
-	"github.com/olivere/elastic"
 )
 
 // command line arguments (call "./MKGoAPI -h" for usage info)
@@ -15,21 +13,13 @@ func main() {
 	// parse command line arguments
 	flag.Parse()
 
-	// init Elastic Search client
-	log.Printf("connecting to ElasticSearch on '%s'", *esURL)
-	es, err := elastic.NewClient( // alternative: NewSimpleClient (light weight, single shot)
-		elastic.SetURL(*esURL),
-		elastic.SetSniff(false), // autodetection of new ES nodes doesn't work in AWS
-	)
-	dieOnError(err)
+	// initialize ElasticSearch client
+	es := initES(*esURL)
+	log.Print(es)
 
-	version, err := es.ElasticsearchVersion(*esURL)
-	dieOnError(err)
-	log.Printf("connection successful, ElasticSearch version %s", version)
-
-	// register page handlers
+	// register REST handlers
 	srv := &http.Server{Addr: ":80"}
-	registerHandlers(srv)
+	registerRestHandlers(srv)
 
 	// run Ctrl-C handler as goroutine
 	go sigIntHandler(srv)
