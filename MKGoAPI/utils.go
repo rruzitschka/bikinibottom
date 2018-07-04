@@ -14,7 +14,7 @@ import (
 type tlog struct{}
 
 func (t *tlog) Write(bytes []byte) (int, error) {
-	return fmt.Print(time.Now().Format("2006-01-02 15:04:05.999 ") + string(bytes))
+	return fmt.Print(time.Now().Format("2006-01-02 15:04:05.000 ") + string(bytes))
 }
 
 func init() {
@@ -36,11 +36,5 @@ func sigIntHandler(srv *http.Server) {
 
 	if err := srv.Shutdown(context.Background()); err != nil {
 		log.Print(err)
-	}
-}
-
-func dieOnError(err error) {
-	if err != nil {
-		log.Fatal(err)
 	}
 }
