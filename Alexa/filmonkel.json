@@ -1,0 +1,30 @@
+{
+    "Welcome":[
+        "Hallo, ich bin die Filmtante, der Filmonkel ist leider krank. Irgendwann werde ich funktionieren und dann kann ich Dir einiges über aktuelle Filme erzählen. Aber frage mich mal: Was ist neu im Kino?"
+        ],
+    "TopTen":[
+        "Zu den Top 10 in Österreich gehöhren folgende Filme: Ich - Einfach unverbesserlich 3. Star Wars: Die letzten Jedi. Und<break time='1s'/>The Boss Baby.",
+        "Zu den Top 10 in Österreich gehöhren folgende Filme: Die Schöne und das Biest. Sing. Und<break time='1s'/>Jumanji: Willkommen im Dschungel."
+        ],
+    "Next":[
+        "Demnächst kommt ins Kino: Solo: A Star Wars Story, Luis und die Aliens. Und<break time='1s'/>Wohne lieber ungewöhnlich.",
+        "Bald gibt es folgende Filme: Auf der Jagd - Wem gehört die Natur?, Die Legende vom hässlichen König. Und<break time='1s'/>Letztendlich sind wir dem Universum egal."
+        ],
+    "NewCinema":[
+        "Neu im Kino gib es zum Beispiel: Deadpool 2, Isle of Dogs - Ataris Reise. Und<break time='1s'/>Was werden die Leute sagen.",
+        "Im Kino gibt es gerade folgende neue Filme: The Happy Prince, Unsere Erde Zwei. Und<break time='1s'/>Rampage - Big Meets Bigger."
+        ],
+    "MovieList":[
+        "Ich kenne eine Reihe von aktuellen Filmen. Möchtest Du wissen, was es neu im Kino gibt, oder möchtest Du wissen, wie die aktuelle Top 10 aussieht? Ich kann Dir auch Filmtipps geben oder sagen was demnächst im Kino kommt. Was möchstest Du gerne wissen?",
+        "Möchtest Du Informationen über Top 10 Filme, über aktuelle Filme, über Filme die demnächst im Kino laufen, oder möchtest Du ein paar Filmtipps? Was möchtest Du wissen?"
+        ],
+    "Recommend":[
+        "Nein, das kann ich leider nicht. Lies lieber ein Buch. Ich wünsche dir noch einen schönen Tag. Ich bin jetzt müde und schalte mich ab."
+        ],
+    "Stop" : [
+        "Bis bald. Vieleicht funktioniere ich dann schon richtig.",
+        "Bis zum nächsten Mal. Ich werde mich inzwischen etwas umprogrammieren."
+    ],
+    "Help":[
+        "Ich kann Dir aktuell nicht viel helfen. Ich kann mir ja nicht mal selbst helfen. Versuche es mit einer Frage."]
+}

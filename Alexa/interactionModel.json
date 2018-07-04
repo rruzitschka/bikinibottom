@@ -1,0 +1,264 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "filmonkel",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "MoviesByGenre",
+                    "slots": [
+                        {
+                            "name": "genre",
+                            "type": "MovieGenres",
+                            "samples": [
+                                "genre {genre}",
+                                "{genre}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "suche mir filme aus dem {genre}",
+                        "suche filme aus dem {genre}",
+                        "genre {genre}",
+                        "empfehle filme aus dem genre {genre}",
+                        "empfehle mir filme aus dem genre {genre}",
+                        "finde filme aus dem genre {genre}",
+                        "kennst du filme aus dem genre {genre}",
+                        "welche filme aus dem genre {genre} kannst du mir empfehlen",
+                        "welche filme aus dem genre {genre} kannst du empfehlen",
+                        "welche filme aus dem genre {genre} kennst du",
+                        "filme aus dem genre {genre}"
+                    ]
+                },
+                {
+                    "name": "MoviesByName",
+                    "slots": [
+                        {
+                            "name": "movies",
+                            "type": "AMAZON.SearchQuery",
+                            "samples": [
+                                "nach dem film {movies}",
+                                "film {movies}",
+                                "{movies}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "finde filme {movies}",
+                        "suche filme {movies}",
+                        "suche filme mit dem titel {movies}",
+                        "filme mit dem titel {movies}",
+                        "welche filme mit dem titel {movies} kennst du",
+                        "welche filme mit dem titel {movies} kannst du empfehlen",
+                        "welche filme mit dem titel {movies} kannst du mir empfehlen",
+                        "kennst du filme mit dem titel {movies}",
+                        "finde filme mit dem titel {movies}",
+                        "empfehle mir filme mit dem titel {movies}",
+                        "empfehle filme mit dem titel {movies}",
+                        "titel {movies}"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "MovieGenres",
+                    "values": [
+                        {
+                            "id": "keingenre",
+                            "name": {
+                                "value": "keingenre",
+                                "synonyms": [
+                                    "alle",
+                                    "alle genres",
+                                    "egal",
+                                    "kein",
+                                    "kein genre"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "sciencefiction",
+                            "name": {
+                                "value": "sciencefiction",
+                                "synonyms": [
+                                    "sf",
+                                    "esef",
+                                    "sience fiction"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "history",
+                            "name": {
+                                "value": "history",
+                                "synonyms": [
+                                    "geschichte"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "biography",
+                            "name": {
+                                "value": "biography",
+                                "synonyms": [
+                                    "bio",
+                                    "biographie"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "documentation",
+                            "name": {
+                                "value": "documentation",
+                                "synonyms": [
+                                    "dokus",
+                                    "dokumentation",
+                                    "dokumentationen"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "horror",
+                            "name": {
+                                "value": "horror"
+                            }
+                        },
+                        {
+                            "id": "theater",
+                            "name": {
+                                "value": "theater",
+                                "synonyms": [
+                                    "bühne"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "musical",
+                            "name": {
+                                "value": "musical",
+                                "synonyms": [
+                                    "musical"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "music",
+                            "name": {
+                                "value": "music",
+                                "synonyms": [
+                                    "songs",
+                                    "song",
+                                    "lieder",
+                                    "musik"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "thriller",
+                            "name": {
+                                "value": "thriller"
+                            }
+                        },
+                        {
+                            "id": "kids",
+                            "name": {
+                                "value": "kids",
+                                "synonyms": [
+                                    "jungendliche",
+                                    "jugend",
+                                    "kinder",
+                                    "kid"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "drama",
+                            "name": {
+                                "value": "drama"
+                            }
+                        },
+                        {
+                            "id": "comedy",
+                            "name": {
+                                "value": "comedy"
+                            }
+                        },
+                        {
+                            "id": "action",
+                            "name": {
+                                "value": "action"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "MoviesByGenre",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "genre",
+                            "type": "MovieGenres",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.981441446857.197872053859"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "MoviesByName",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "movies",
+                            "type": "AMAZON.SearchQuery",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1119495266798.1505871812236"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "prompts": [
+            {
+                "id": "Elicit.Slot.981441446857.197872053859",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "In welchem Genre soll ich Filme suchen"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1119495266798.1505871812236",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "nach welchem film soll ich suchen"
+                    }
+                ]
+            }
+        ]
+    }
+}
