@@ -1,11 +1,15 @@
 package main
 
+// Note regarding relative import paths (e.g. "./rest"):
+// Go advises to use full qualified paths (e.g. "github.com/rruzitschka/bikinibottom/MKGoAPI/rest"),
+// but this doesn't work with the current multi-project git repository
 import (
 	"flag"
 	"log"
 	"net/http"
 
-	"github.com/olivere/elastic"
+	"./elasticsearch"
+	"./rest"
 )
 
 // command line arguments (call "./MKGoAPI -h" for usage info)
@@ -15,21 +19,16 @@ func main() {
 	// parse command line arguments
 	flag.Parse()
 
-	// init Elastic Search client
-	log.Printf("connecting to ElasticSearch on '%s'", *esURL)
-	es, err := elastic.NewClient( // alternative: NewSimpleClient (light weight, single shot)
-		elastic.SetURL(*esURL),
-		elastic.SetSniff(false), // autodetection of new ES nodes doesn't work in AWS
-	)
-	dieOnError(err)
+	// initialize ElasticSearch client
+	if version, err := elasticsearch.InitES(*esURL); err == nil {
+		log.Printf("connection successful, ElasticSearch version %s", version)
+	} else {
+		log.Fatal("ERROR: ", err)
+	}
 
-	version, err := es.ElasticsearchVersion(*esURL)
-	dieOnError(err)
-	log.Printf("connection successful, ElasticSearch version %s", version)
-
-	// register page handlers
+	// register REST handlers
 	srv := &http.Server{Addr: ":80"}
-	registerHandlers(srv)
+	rest.RegisterRestHandlers(srv)
 
 	// run Ctrl-C handler as goroutine
 	go sigIntHandler(srv)
