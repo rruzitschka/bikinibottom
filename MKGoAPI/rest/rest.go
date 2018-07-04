@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"regexp"
+	"strconv"
+	"strings"
 )
 
 // arbitrary data structure for json
@@ -13,9 +16,15 @@ type jsonType map[string]interface{}
 // RegisterRestHandlers registers all REST handlers to srv
 func RegisterRestHandlers(srv *http.Server) {
 	http.HandleFunc("/", root)
-	http.HandleFunc("/assets", assets)
+	http.HandleFunc("/v1/assets", assets)
 }
 
+// root handles everything except the registered REST handlers
+func root(res http.ResponseWriter, req *http.Request) {
+	sendResponse(&res, &jsonType{"message": "Welcome to the Go bikinibottom API"})
+}
+
+// respond with a JSON structure and a specific http status code
 func sendStatusResponse(res *http.ResponseWriter, jsonData *jsonType, httpStatus int) {
 	j, err := json.Marshal(jsonData)
 	if err != nil { // can't imagine a case where this could happen, but you never know
@@ -38,7 +47,35 @@ func sendResponse(res *http.ResponseWriter, jsonData *jsonType) {
 	sendStatusResponse(res, jsonData, http.StatusOK)
 }
 
-// root handles everything except the registered REST handlers
-func root(res http.ResponseWriter, req *http.Request) {
-	sendResponse(&res, &jsonType{"message": "Welcome to the Go bikinibottom API"})
+// convenience function to send HTTP 400 Bad Request response
+func sendInterfaceError(res *http.ResponseWriter, message string) {
+	sendStatusResponse(res, &jsonType{"error": message}, http.StatusBadRequest)
+}
+
+// convenience function to send HTTP 500 Internal Server Error response
+func sendServerError(res *http.ResponseWriter, message string) {
+	sendStatusResponse(res, &jsonType{"error": message}, http.StatusInternalServerError)
+}
+
+// return address part of req.RemoteAddr for logging
+func ip(req *http.Request) string {
+	return req.RemoteAddr[0:strings.LastIndex(req.RemoteAddr, ":")]
+}
+
+// parameter handling functions
+var rxUint = regexp.MustCompile("^[0-9]+$")
+
+func paramUint(param string, defaultValue uint) uint {
+	if rxUint.MatchString(param) {
+		v, _ := strconv.Atoi(param)
+		return uint(v)
+	}
+	return defaultValue
+}
+
+func paramStr(param, defaultValue string) string {
+	if param == "" {
+		return defaultValue
+	}
+	return param
 }
