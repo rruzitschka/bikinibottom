@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 
+	"./elasticsearch"
 	"./rest"
 )
 
@@ -19,8 +20,11 @@ func main() {
 	flag.Parse()
 
 	// initialize ElasticSearch client
-	es := initES(*esURL)
-	log.Print(es)
+	if version, err := elasticsearch.InitES(*esURL); err == nil {
+		log.Printf("connection successful, ElasticSearch version %s", version)
+	} else {
+		log.Fatal("ERROR: ", err)
+	}
 
 	// register REST handlers
 	srv := &http.Server{Addr: ":80"}

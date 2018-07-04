@@ -38,9 +38,3 @@ func sigIntHandler(srv *http.Server) {
 		log.Print(err)
 	}
 }
-
-func dieOnError(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}

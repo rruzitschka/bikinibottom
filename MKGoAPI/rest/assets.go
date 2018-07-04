@@ -1,8 +1,12 @@
 package rest
 
 import (
+	"context"
 	"log"
 	"net/http"
+
+	"../elasticsearch"
+	"github.com/olivere/elastic"
 )
 
 /*
@@ -27,6 +31,16 @@ func assets(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// debug logging
-	log.Printf("[assets] called with [q='%s',alexa=%v,from=%v,size=%v] from %s\n", q, alexa, from, size, ip(req))
-	sendResponse(&res, &jsonType{"q": q, "alexa": alexa, "from": from, "size": size})
+	log.Printf("[assets] called with [q='%s',alexa=%v,from=%v,size=%v] from %s", q, alexa, from, size, ip(req))
+	result, err := elasticsearch.GetClient().Search().
+		Index("mediaasset").Query(elastic.NewQueryStringQuery(q)).
+		From(from).Size(size).
+		Do(context.Background())
+	if err != nil {
+		log.Printf("[assets] ERROR: %v", err)
+		sendServerError(&res, err.Error())
+		return
+	}
+	log.Printf("[assets] received %d of %d hits in %dms", len(result.Hits.Hits), result.TotalHits(), result.TookInMillis)
+	sendResponse(&res, &jsonType{"result": result})
 }

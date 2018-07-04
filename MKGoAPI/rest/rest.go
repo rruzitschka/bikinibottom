@@ -65,10 +65,10 @@ func ip(req *http.Request) string {
 // parameter handling functions
 var rxUint = regexp.MustCompile("^[0-9]+$")
 
-func paramUint(param string, defaultValue uint) uint {
+func paramUint(param string, defaultValue int) int {
 	if rxUint.MatchString(param) {
 		v, _ := strconv.Atoi(param)
-		return uint(v)
+		return v
 	}
 	return defaultValue
 }
