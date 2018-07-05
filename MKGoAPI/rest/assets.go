@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"time"
 
 	"../elasticsearch"
 	"github.com/olivere/elastic"
@@ -32,6 +33,7 @@ func assets(res http.ResponseWriter, req *http.Request) {
 
 	// debug logging
 	log.Printf("[assets] called with [q='%s',alexa=%v,from=%v,size=%v] from %s", q, alexa, from, size, ip(req))
+	t1 := time.Now()
 	result, err := elasticsearch.GetClient().Search().
 		Index("mediaasset").Query(elastic.NewQueryStringQuery(q)).
 		From(from).Size(size).
@@ -41,6 +43,6 @@ func assets(res http.ResponseWriter, req *http.Request) {
 		sendServerError(&res, err.Error())
 		return
 	}
-	log.Printf("[assets] received %d of %d hits in %dms", len(result.Hits.Hits), result.TotalHits(), result.TookInMillis)
-	sendResponse(&res, &jsonType{"result": result})
+	log.Printf("[assets] received %d of %d hits in %dms, query took %dms", len(result.Hits.Hits), result.TotalHits(), time.Since(t1)/1e6, result.TookInMillis)
+	sendHitsResponse(&res, result)
 }

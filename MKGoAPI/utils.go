@@ -17,6 +17,7 @@ func (t *tlog) Write(bytes []byte) (int, error) {
 	return fmt.Print(time.Now().Format("2006-01-02 15:04:05.000 ") + string(bytes))
 }
 
+// all init functions are automatically called before entering main()
 func init() {
 	log.SetFlags(0) // disable default log date/time output
 	log.SetOutput(new(tlog))

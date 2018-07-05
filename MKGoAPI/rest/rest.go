@@ -8,6 +8,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/olivere/elastic"
 )
 
 // arbitrary data structure for json
@@ -17,11 +19,6 @@ type jsonType map[string]interface{}
 func RegisterRestHandlers(srv *http.Server) {
 	http.HandleFunc("/", root)
 	http.HandleFunc("/v1/assets", assets)
-}
-
-// root handles everything except the registered REST handlers
-func root(res http.ResponseWriter, req *http.Request) {
-	sendResponse(&res, &jsonType{"message": "Welcome to the Go bikinibottom API"})
 }
 
 // respond with a JSON structure and a specific http status code
@@ -57,13 +54,28 @@ func sendServerError(res *http.ResponseWriter, message string) {
 	sendStatusResponse(res, &jsonType{"error": message}, http.StatusInternalServerError)
 }
 
+// regular expression matching empty and null json fields
+var rxJSONCleanup = regexp.MustCompile(`"[^"]+":(null|""),?`)
+
+// convenience function to return the hits of a search result
+func sendHitsResponse(res *http.ResponseWriter, result *elastic.SearchResult) {
+	j, _ := json.Marshal(result.Hits.Hits)
+
+	// cleanup response by removing empty and null fields (elastic.SearchHit has plenty of them without the json "omitempty" tag)
+	j = rxJSONCleanup.ReplaceAllLiteral(j, []byte{})
+	j = []byte(strings.Replace(string(j), ",}", "}", -1))
+
+	(*res).Header().Set("Content-Type", "application/json")
+	(*res).Write(append(j, '\n'))
+}
+
 // return address part of req.RemoteAddr for logging
 func ip(req *http.Request) string {
 	return req.RemoteAddr[0:strings.LastIndex(req.RemoteAddr, ":")]
 }
 
 // parameter handling functions
-var rxUint = regexp.MustCompile("^[0-9]+$")
+var rxUint = regexp.MustCompile(`^[0-9]+$`)
 
 func paramUint(param string, defaultValue int) int {
 	if rxUint.MatchString(param) {
