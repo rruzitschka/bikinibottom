@@ -50,8 +50,8 @@ func sendInterfaceError(res *http.ResponseWriter, message string) {
 }
 
 // convenience function to send HTTP 500 Internal Server Error response
-func sendServerError(res *http.ResponseWriter, message string) {
-	sendStatusResponse(res, &jsonType{"error": message}, http.StatusInternalServerError)
+func sendServerError(res *http.ResponseWriter, err interface{}) {
+	sendStatusResponse(res, &jsonType{"error": err}, http.StatusInternalServerError)
 }
 
 // regular expression matching empty and null json fields

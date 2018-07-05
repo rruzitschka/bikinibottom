@@ -2,6 +2,7 @@ package rest
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"net/http"
 	"time"
@@ -39,8 +40,9 @@ func assets(res http.ResponseWriter, req *http.Request) {
 		From(from).Size(size).
 		Do(context.Background())
 	if err != nil {
-		log.Printf("[assets] ERROR: %v", err)
-		sendServerError(&res, err.Error())
+		e, _ := json.Marshal(err)
+		log.Printf("[assets] ERROR: %s", e)
+		sendServerError(&res, &err)
 		return
 	}
 	log.Printf("[assets] received %d of %d hits in %dms, query took %dms", len(result.Hits.Hits), result.TotalHits(), time.Since(t1)/1e6, result.TookInMillis)
