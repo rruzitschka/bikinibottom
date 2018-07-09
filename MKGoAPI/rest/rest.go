@@ -8,8 +8,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-
-	"github.com/olivere/elastic"
 )
 
 // arbitrary data structure for json
@@ -19,6 +17,7 @@ type jsonType map[string]interface{}
 func RegisterRestHandlers(srv *http.Server) {
 	http.HandleFunc("/", root)
 	http.HandleFunc("/v1/assets", assets)
+	http.HandleFunc("/v1/alexa/assets", alexaAssets)
 }
 
 // respond with a JSON structure and a specific http status code
@@ -55,14 +54,14 @@ func sendServerError(res *http.ResponseWriter, err interface{}) {
 }
 
 // regular expression matching empty and null json fields
-var rxJSONCleanup = regexp.MustCompile(`"[^"]+":(null|""),?`)
+var rxJSONEmptyElements = regexp.MustCompile(`"[^"]+":(null|""),?`)
 
-// convenience function to return the hits of a search result
-func sendHitsResponse(res *http.ResponseWriter, result *elastic.SearchResult) {
-	j, _ := json.Marshal(result.Hits.Hits)
+// convenience function to return a search result array with empty and null fields removed
+func sendCleanResponse(res *http.ResponseWriter, result interface{}) {
+	j, _ := json.Marshal(result)
 
 	// cleanup response by removing empty and null fields (elastic.SearchHit has plenty of them without the json "omitempty" tag)
-	j = rxJSONCleanup.ReplaceAllLiteral(j, []byte{})
+	j = rxJSONEmptyElements.ReplaceAllLiteral(j, []byte{})
 	j = []byte(strings.Replace(string(j), ",}", "}", -1))
 
 	(*res).Header().Set("Content-Type", "application/json")
