@@ -17,9 +17,9 @@ type alexaHit struct {
 	Name           string `json:"name"`
 	Language       string `json:"language"`
 	ProductionYear int
-	Synopsis       string   `json:"synopsis"`
-	Actors         []string `json:"actors"`
-	Genres         []string `json:"genres"`
+	Synopsis       string        `json:"synopsis"`
+	Actors         []interface{} `json:"actors"`
+	Genres         []string      `json:"genres"`
 }
 
 /*
@@ -31,6 +31,8 @@ Example:
   GET http://127.0.0.1/v1/alexa/assets?q=annihalizer&from=5&size=5
 */
 func alexaAssets(res http.ResponseWriter, req *http.Request) {
+	fName := "alexaAssets"
+
 	// handle query parameters
 	p := req.URL.Query()
 	q := paramStr(p.Get("q"), "*")
@@ -40,7 +42,7 @@ func alexaAssets(res http.ResponseWriter, req *http.Request) {
 		sendInterfaceError(&res, "size parameter must be >0")
 		return
 	}
-	log.Printf("[assets] called with [q='%s',from=%v,size=%v] from %s", q, from, size, ip(req))
+	log.Printf("[%s] called with [q='%s',from=%v,size=%v] from %s", fName, q, from, size, ip(req))
 
 	// build and send the request for selected alexa relevant fields to ES
 	t1 := time.Now()
@@ -53,11 +55,14 @@ func alexaAssets(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		// log and return entire error (including root cause)
 		e, _ := json.Marshal(err)
-		log.Printf("[assets] ERROR: %s", e)
+		log.Printf("[%s] ERROR: %s", fName, e)
 		sendServerError(&res, &err)
 		return
 	}
-	log.Printf("[assets] received %d of %d hits in %dms, query took %dms", len(result.Hits.Hits), result.TotalHits(), time.Since(t1)/1e6, result.TookInMillis)
+	log.Printf("[%s] received %d of %d hits in %dms, query took %dms", fName, len(result.Hits.Hits), result.TotalHits(), time.Since(t1)/1e6, result.TookInMillis)
+
+	// handle json parsing errors
+	defer panicHandler(&res)
 
 	// compile alexa response
 	hitArray := []*alexaHit{}
@@ -72,9 +77,21 @@ func alexaAssets(res http.ResponseWriter, req *http.Request) {
 			Language:       ml["langId"].(string),
 			ProductionYear: int(r["productionYear"].(float64)),
 			Synopsis:       ml["synopsis"].(map[string]interface{})["short"].(string),
-			// Actors
-			// Genres
 		}
+
+		// optionally add actors
+		if _, exists := ml["actors"]; exists {
+			a.Actors = ml["actors"].([]interface{})
+		}
+
+		// optionally add genres
+		if _, exists := r["genres"]; exists {
+			for _, g := range r["genres"].([]interface{}) {
+				a.Genres = append(a.Genres, string(g.(string)))
+			}
+		}
+
+		// add alexaHit to response
 		hitArray = append(hitArray, &a)
 	}
 

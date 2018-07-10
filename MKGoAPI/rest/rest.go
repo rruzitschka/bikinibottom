@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"regexp"
+	"runtime/debug"
 	"strconv"
 	"strings"
 )
@@ -51,6 +52,14 @@ func sendInterfaceError(res *http.ResponseWriter, message string) {
 // convenience function to send HTTP 500 Internal Server Error response
 func sendServerError(res *http.ResponseWriter, err interface{}) {
 	sendStatusResponse(res, &jsonType{"error": err}, http.StatusInternalServerError)
+}
+
+// defer panicHandler to log and return panics to client
+func panicHandler(res *http.ResponseWriter) {
+	if e := recover(); e != nil {
+		log.Printf("ERROR decoding ElasticSearch response: %v\n  %s", e, strings.Replace(string(debug.Stack()), "\n", "\n  ", -1))
+		sendInterfaceError(res, "unable to decode ElasticSearch response: "+fmt.Sprintf("%v", e))
+	}
 }
 
 // regular expression matching empty and null json fields

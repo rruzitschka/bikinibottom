@@ -19,6 +19,8 @@ Example:
   GET http://127.0.0.1/v1/assets?q=annihalizer&from=15&size=5
 */
 func assets(res http.ResponseWriter, req *http.Request) {
+	fName := "assets"
+
 	// handle query parameters
 	p := req.URL.Query()
 	q := paramStr(p.Get("q"), "*")
@@ -28,7 +30,7 @@ func assets(res http.ResponseWriter, req *http.Request) {
 		sendInterfaceError(&res, "size parameter must be >0")
 		return
 	}
-	log.Printf("[assets] called with [q='%s',from=%v,size=%v] from %s", q, from, size, ip(req))
+	log.Printf("[%s] called with [q='%s',from=%v,size=%v] from %s", fName, q, from, size, ip(req))
 
 	// build and send the request to ES
 	t1 := time.Now()
@@ -40,11 +42,11 @@ func assets(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		// log and return entire error (including root cause)
 		e, _ := json.Marshal(err)
-		log.Printf("[assets] ERROR: %s", e)
+		log.Printf("[%s] ERROR: %s", fName, e)
 		sendServerError(&res, &err)
 		return
 	}
-	log.Printf("[assets] received %d of %d hits in %dms, query took %dms", len(result.Hits.Hits), result.TotalHits(), time.Since(t1)/1e6, result.TookInMillis)
+	log.Printf("[%s] received %d of %d hits in %dms, query took %dms", fName, len(result.Hits.Hits), result.TotalHits(), time.Since(t1)/1e6, result.TookInMillis)
 
 	// return anonymous array of hits to client
 	sendCleanResponse(&res, result.Hits.Hits)
